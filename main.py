@@ -1,19 +1,27 @@
-from watcher import start_watching
+from streamer_ws import start_stream
 
-stockSymbol = input("Please enter the name of the stock you want to track: ").strip().upper()
-triggerPrice = float(input("Please enter the price at which you want to buy or sell: ").strip())
-triggerAction = input("Do you want to buy or sell?: ").strip().upper()
-optionSymbol = input("Please enter the symbol for the option you have: ").strip().upper()
+stocks = []
 
-add_to_string = "NSE:"
-stockSymbol = add_to_string + stockSymbol
+print("How many stocks do you want to track?")
+count = int(input("Enter number: ").strip())
 
-user_input = {
-    "Stock_name" : stockSymbol , 
-    "Trigger" : triggerPrice , 
-    "Buy_Or_Sell" : triggerAction , 
-    "Option" : optionSymbol , 
-}
+for i in range(count):
+    print(f"\n### Enter details for Stock #{i+1} ###")
 
-start_watching(user_input)
+    stockSymbol = input("Stock name (e.g. RELIANCE): ").strip().upper()
+    triggerPrice = float(input("Trigger price: ").strip())
+    triggerAction = input("Buy or Sell?: ").strip().upper()
+    optionSymbol = input("Option symbol (e.g. RELIANCE25FEB2500CE): ").strip().upper()
 
+    stockNameFull = "NSE:" + stockSymbol 
+    user_input = {
+        "Stock_name": stockNameFull,
+        "Trigger": triggerPrice,
+        "Buy_Or_Sell": triggerAction,
+        "Option": optionSymbol
+    }
+
+    stocks.append(user_input)
+
+print("\n Streaming live prices… waiting for triggers...\n")
+start_stream(stocks)
